@@ -7,12 +7,16 @@
 class lox {
 public:
     explicit lox(const std::string &file_name);
-    int run(std::string code);
-
     std::string read_file() const;
+
+    void error(const int &line, const std::string &message);
+    void report(const int &line, const std::string &where, const std::string &message);
+
+    int run(std::string code);
 
 private:
     std::string file;
+    bool had_error = false;
 };
 
 

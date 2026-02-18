@@ -1,5 +1,6 @@
 #include "lox.h"
 #include <fstream>
+#include <iostream>
 
 lox::lox(const std::string &file_name) {
     file = file_name;
@@ -11,4 +12,20 @@ std::string lox::read_file() const {
                               std::istreambuf_iterator<char>()};
 
     return file_contents;
+}
+
+void lox::error(const int& line, const std::string& message) {
+    report(line, "", message);
+}
+
+void lox::report(const int& line, const std::string& where, const std::string& message) {
+    std::cerr << "[line " << line << "] Error" << where << ": " << message << "\n";
+    had_error = true;
+}
+
+int lox::run(std::string code) {
+    // after logic
+    if (had_error) {
+        exit(65);
+    }
 }
