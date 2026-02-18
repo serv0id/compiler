@@ -1,17 +1,6 @@
+#include <fstream>
 #include <iostream>
-#include <utility>
-
-class Lox {
-public:
-    Lox(const std::string &file_name) {
-        this->file = file_name;
-    }
-    int run();
-    std::string read_file(std::string& file_name);
-
-private:
-    std::string file;
-};
+#include "lox.h"
 
 int main(const int argc, char *argv[]) {
     std::cout << "Welcome to lox compiler." << std::endl;
@@ -19,10 +8,12 @@ int main(const int argc, char *argv[]) {
     if (argc != 2) {
         std::cerr << "Usage: " << argv[0] << " <filename>" << std::endl;
         exit(64);  // sysexits.h
-    } else {
-        std::string file_name = argv[1];
-        Lox lox = Lox(file_name);
     }
+
+    const std::string file_name = argv[1];
+    auto program = lox(file_name);
+
+    // program.run(program.read_file());
 
     return 0;
 }
