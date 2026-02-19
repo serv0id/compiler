@@ -14,11 +14,11 @@ std::string lox::read_file() const {
     return file_contents;
 }
 
-void lox::error(const int& line, const std::string& message) {
+void lox::error(const int line, const std::string& message) {
     report(line, "", message);
 }
 
-void lox::report(const int& line, const std::string& where, const std::string& message) {
+void lox::report(const int line, const std::string& where, const std::string& message) {
     std::cerr << "[line " << line << "] Error" << where << ": " << message << "\n";
     had_error = true;
 }
@@ -26,6 +26,7 @@ void lox::report(const int& line, const std::string& where, const std::string& m
 int lox::run(std::string code) {
     // after logic
     if (had_error) {
+        std::cout << "Exiting due to error(s)";
         exit(65);
     }
 }

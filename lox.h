@@ -9,8 +9,8 @@ public:
     explicit lox(const std::string &file_name);
     std::string read_file() const;
 
-    void error(const int &line, const std::string &message);
-    void report(const int &line, const std::string &where, const std::string &message);
+    void error(int line, const std::string &message);
+    void report(int line, const std::string &where, const std::string &message);
 
     int run(std::string code);
 
