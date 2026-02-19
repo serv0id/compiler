@@ -1,6 +1,6 @@
 #include <fstream>
 #include <iostream>
-#include "lox.h"
+#include "include/lox.h"
 
 int main(const int argc, char *argv[]) {
     std::cout << "Welcome to lox compiler." << std::endl;

@@ -5,7 +5,9 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_executable(compiler main.cpp
         lox.cpp
-        lox.h
-        tokentype.h
+        include/lox.h
+        include/tokentype.h
         token.cpp
-        token.h)
+        include/token.h
+        scanner.cpp
+        include/scanner.h)

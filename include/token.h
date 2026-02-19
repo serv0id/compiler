@@ -10,7 +10,7 @@ public:
     token(TokenType type,
              std::string lexeme,
              int line,
-             const std::any& value);
+             std::any  literal);
 private:
     const TokenType type;
     const std::string lexeme;

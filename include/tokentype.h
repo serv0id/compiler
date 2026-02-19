@@ -17,7 +17,9 @@ enum TokenType {
 
     // Keywords.
     AND, CLASS, ELSE, FALSE, FUN, FOR, IF, NIL, OR,
-    PRINT, RETURN, SUPER, THIS, TRUE, VAR, WHILE, EOFF
+    PRINT, RETURN, SUPER, THIS, TRUE, VAR, WHILE,
+
+    EOFF // doesn't default to -1
   };
 
 #endif //COMPILER_TOKENTYPE_H

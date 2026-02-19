@@ -1,6 +1,8 @@
-#include "lox.h"
+#include "include/lox.h"
 #include <fstream>
 #include <iostream>
+
+bool lox::had_error = false;
 
 lox::lox(const std::string &file_name) {
     file = file_name;

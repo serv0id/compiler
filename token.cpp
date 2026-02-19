@@ -1,12 +1,15 @@
-#include "token.h"
+#include "include/token.h"
+#include <utility>
 
 token::token(const TokenType type,
          std::string lexeme,
          const int line,
-         const std::any& value)
+         std::any  literal)
 : type(type),
   lexeme(std::move(lexeme)),
   line(line),
-  literal(value)
+  literal(std::move(literal))
 {}
+
+
 
