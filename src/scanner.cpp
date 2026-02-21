@@ -1,8 +1,8 @@
 #include <utility>
-#include "include/scanner.h"
+#include "../include/scanner.h"
 
-#include "include/lox.h"
-#include "include/token.h"
+#include "../include/lox.h"
+#include "../include/token.h"
 
 scanner::scanner(std::string source) {
     this->source = std::move(source);

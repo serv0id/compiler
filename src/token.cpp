@@ -1,4 +1,4 @@
-#include "include/token.h"
+#include "../include/token.h"
 #include <utility>
 
 token::token(const TokenType type,
