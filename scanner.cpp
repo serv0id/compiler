@@ -47,7 +47,7 @@ void scanner::scan_token() {
 
         case '/':
             if (match('/')) {
-                while (source[current] != '\n' && !is_at_end()) {
+                while (!is_at_end() && source[current] != '\n') {
                     current++;
                 }
             } else {
@@ -79,7 +79,9 @@ void scanner::add_token(TokenType type, std::any literal) {
 
 bool scanner::match(const char c) {
     if (is_at_end()) return false;
-    return source[current++] == c;
+    if (source[current++] != c) return false;
+    current++;
+    return true;
 }
 
 void scanner::handle_string() {
