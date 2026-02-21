@@ -8,6 +8,25 @@ scanner::scanner(std::string source) {
     this->source = std::move(source);
 }
 
+const std::map<std::string, TokenType> scanner::keywords= {
+    {"and",    AND},
+    {"class",  CLASS},
+    {"else",   ELSE},
+    {"false",  FALSE},
+    {"for",    FOR},
+    {"fun",    FUN},
+    {"if",     IF},
+    {"nil",    NIL},
+    {"or",     OR},
+    {"print",  PRINT},
+    {"return", RETURN},
+    {"super",  SUPER},
+    {"this",   THIS},
+    {"true",   TRUE},
+    {"var",    VAR},
+    {"while",  WHILE}
+};
+
 bool scanner::is_at_end() {
     // checks if we reach the file end
     return current >= source.length();
@@ -67,6 +86,8 @@ void scanner::scan_token() {
         default:
             if (isdigit(c)) {
                 handle_number();
+            } else if (isalpha(c) || c == '_') { // identifiers can start with an underscore
+                handle_identifier();
             } else {
                 lox::error(line, "Unexpected character: " + std::to_string(c));
             }
@@ -120,4 +141,16 @@ void scanner::handle_number() {
 
     double value = std::stod(source.substr(start, current - start));
     add_token(NUMBER, value);
+}
+
+void scanner::handle_identifier() {
+    while (!is_at_end() && (isalnum(source[current]) || source[current] == '_')) {
+        current++;
+    }
+
+    std::string value = source.substr(start, current - start);
+
+    if (auto it = keywords.find(value); it != keywords.end()) {
+        add_token(it->second, it->first);
+    } else add_token(IDENTIFIER, value);
 }

@@ -1,5 +1,6 @@
 #ifndef COMPILER_SCANNER_H
 #define COMPILER_SCANNER_H
+#include <map>
 #include <string>
 #include <vector>
 #include "token.h"
@@ -23,12 +24,13 @@ public:
 
     void handle_string();
 
-    bool is_digit(char c);
-
     void handle_number();
+
+    void handle_identifier();
 
 private:
     std::vector<token> tokens;
+    static const std::map<std::string, TokenType> keywords;
     std::string source;
     int start = 0;
     int line = 1;
