@@ -1,8 +1,8 @@
-#include "../include/lox.h"
+#include "lox.h"
+#include "scanner.h"
 #include <fstream>
 #include <iostream>
 #include <utility>
-#include "../include/scanner.h"
 
 bool lox::had_error = false;
 
