@@ -19,3 +19,13 @@ add_executable(tests
         tests/lexer.cpp
 )
 target_link_libraries(tests PRIVATE core)
+
+include(FetchContent)
+FetchContent_Declare(
+        magic_enum
+        GIT_REPOSITORY https://github.com/Neargye/magic_enum.git
+        GIT_TAG        v0.9.7
+)
+FetchContent_MakeAvailable(magic_enum)
+
+target_link_libraries(core PRIVATE magic_enum::magic_enum)

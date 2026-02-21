@@ -1,5 +1,7 @@
 #include <utility>
 #include "scanner.h"
+#include <iostream>
+#include <magic_enum/magic_enum.hpp>
 #include "lox.h"
 #include "token.h"
 
@@ -38,7 +40,7 @@ std::vector<token> scanner::scan_tokens() {
         scan_token();
     }
 
-    tokens.emplace_back(EOFF, "", line, NULL); // add EOF at the end
+    tokens.emplace_back(EOFF, "", line, std::any{}); // add EOF at the end
     return tokens;
 }
 
@@ -88,13 +90,13 @@ void scanner::scan_token() {
             } else if (isalpha(c) || c == '_') { // identifiers can start with an underscore
                 handle_identifier();
             } else {
-                lox::error(line, "Unexpected character: " + std::to_string(c));
+                lox::error(line, "Unexpected character: " + std::string(1, c));
             }
     }
 }
 
 void scanner::add_token(TokenType type) {
-    add_token(type, NULL);
+    add_token(type, std::any{});
 }
 
 void scanner::add_token(TokenType type, std::any literal) {
@@ -150,6 +152,15 @@ void scanner::handle_identifier() {
     std::string value = source.substr(start, current - start);
 
     if (auto it = keywords.find(value); it != keywords.end()) {
-        add_token(it->second, it->first);
+        add_token(it->second);
     } else add_token(IDENTIFIER, value);
+}
+
+void scanner::print_tokens() const {
+    for (const auto& t : tokens) {
+        std::cout << magic_enum::enum_name(t.get_type())
+                  << " " << t.get_lexeme()
+                  << " line=" << t.get_line()
+                  << "\n";
+    }
 }

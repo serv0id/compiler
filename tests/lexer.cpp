@@ -3,8 +3,9 @@
 
 int main() {
     std::cout << "Testing suite for the lexer!" << std::endl;
-
-    auto program = lox("test.lox");
+    auto program = lox("../tests/lexer.lox");
 
     program.run(program.read_file());
+
+    return 0;
 }

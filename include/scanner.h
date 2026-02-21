@@ -28,6 +28,8 @@ public:
 
     void handle_identifier();
 
+    void print_tokens() const;
+
 private:
     std::vector<token> tokens;
     static const std::map<std::string, TokenType> keywords;

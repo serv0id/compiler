@@ -29,6 +29,9 @@ void lox::report(const int line, const std::string& where, const std::string& me
 
 int lox::run(std::string code) {
     scanner scanner(std::move(code));
+    scanner.scan_tokens();
+    scanner.print_tokens();
+
     if (had_error) {
         std::cout << "Exiting due to error(s)";
         exit(65);
