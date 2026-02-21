@@ -1,6 +1,8 @@
 #include "include/lox.h"
 #include <fstream>
 #include <iostream>
+#include <utility>
+#include "include/scanner.h"
 
 bool lox::had_error = false;
 
@@ -26,9 +28,10 @@ void lox::report(const int line, const std::string& where, const std::string& me
 }
 
 int lox::run(std::string code) {
-    // after logic
+    scanner scanner(std::move(code));
     if (had_error) {
         std::cout << "Exiting due to error(s)";
         exit(65);
     }
+    return 0;
 }

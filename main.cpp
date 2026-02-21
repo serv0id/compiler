@@ -13,7 +13,7 @@ int main(const int argc, char *argv[]) {
     const std::string file_name = argv[1];
     auto program = lox(file_name);
 
-    // program.run(program.read_file());
+    program.run(program.read_file());
 
     return 0;
 }

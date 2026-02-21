@@ -64,7 +64,12 @@ void scanner::scan_token() {
             break;
         case '"': handle_string(); break;
 
-        default: lox::error(line, "Unexpected character: " + std::to_string(c));
+        default:
+            if (isdigit(c)) {
+                handle_number();
+            } else {
+                lox::error(line, "Unexpected character: " + std::to_string(c));
+            }
     }
 }
 
@@ -79,7 +84,7 @@ void scanner::add_token(TokenType type, std::any literal) {
 
 bool scanner::match(const char c) {
     if (is_at_end()) return false;
-    if (source[current++] != c) return false;
+    if (source[current] != c) return false;
     current++;
     return true;
 }
@@ -99,4 +104,20 @@ void scanner::handle_string() {
 
     std::string value = source.substr(start + 1, current - start - 2);
     add_token(STRING, value);
+}
+
+void scanner::handle_number() {
+    while (!is_at_end() && isdigit(source[current])) {
+        current++;
+    }
+
+    if (!is_at_end() && source[current] == '.') {
+        if (current + 1 < source.length() && isdigit(source[current + 1])) {
+            current++;
+        }
+        while (!is_at_end() && isdigit(source[current])) current++;
+    }
+
+    double value = std::stod(source.substr(start, current - start));
+    add_token(NUMBER, value);
 }

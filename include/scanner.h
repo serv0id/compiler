@@ -23,6 +23,10 @@ public:
 
     void handle_string();
 
+    bool is_digit(char c);
+
+    void handle_number();
+
 private:
     std::vector<token> tokens;
     std::string source;
