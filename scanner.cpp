@@ -17,6 +17,7 @@ std::vector<token> scanner::scan_tokens() {
     while (!is_at_end()) {
         // scan individual tokens
         start = current;
+        scan_token();
     }
 
     tokens.emplace_back(EOFF, "", line, NULL); // add EOF at the end
@@ -61,6 +62,7 @@ void scanner::scan_token() {
         case '\n':
             line++;
             break;
+        case '"': handle_string(); break;
 
         default: lox::error(line, "Unexpected character: " + std::to_string(c));
     }
@@ -71,11 +73,28 @@ void scanner::add_token(TokenType type) {
 }
 
 void scanner::add_token(TokenType type, std::any literal) {
-    std::string text = source.substr(start, current);
+    std::string text = source.substr(start,  current - start);
     tokens.emplace_back(type, text, line, literal);
 }
 
 bool scanner::match(const char c) {
     if (is_at_end()) return false;
     return source[current++] == c;
+}
+
+void scanner::handle_string() {
+    while (!is_at_end() && source[current] != '"') {
+        if (source[current] == '\n') line++;
+        current++;
+    }
+
+    if (is_at_end()) {
+        lox::error(line, "Unterminated string.");
+        return;
+    }
+
+    current++;
+
+    std::string value = source.substr(start + 1, current - start - 2);
+    add_token(STRING, value);
 }

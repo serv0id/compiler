@@ -21,6 +21,8 @@ public:
 
     bool match(char c);
 
+    void handle_string();
+
 private:
     std::vector<token> tokens;
     std::string source;
