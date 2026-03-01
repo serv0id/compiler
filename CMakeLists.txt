@@ -8,6 +8,8 @@ add_library(core
         src/lox.cpp
         src/token.cpp
         src/scanner.cpp
+        src/astprinter.cpp
+        include/astprinter.h
 )
 
 target_include_directories(core PUBLIC include)
