@@ -10,6 +10,8 @@ add_library(core
         src/scanner.cpp
         src/astprinter.cpp
         include/astprinter.h
+        src/parser.cpp
+        include/parser.h
 )
 
 target_include_directories(core PUBLIC include)
