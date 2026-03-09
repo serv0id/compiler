@@ -2,12 +2,15 @@
 #define COMPILER_LOX_H
 #include <string>
 
+#include "token.h"
+
 
 class lox {
 public:
     explicit lox(const std::string &file_name);
     std::string read_file() const;
 
+    static void error(const token& token, const std::string& string);
     static void error(int line, const std::string &message);
     static void report(int line, const std::string &where, const std::string &message);
 

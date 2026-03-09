@@ -1,5 +1,7 @@
 #include "parser.h"
+#include "lox.h"
 #include <algorithm>
+#include <utility>
 
 /*
 
@@ -25,6 +27,11 @@ token parser::previous() {
     return tokens.at(current - 1);
 }
 
+ParseError parser::error(const token& token, const std::string& message) {
+    lox::error(token, message);
+    return {};
+}
+
 token parser::advance() {
     if (!is_at_end()) current++;
     return previous();
@@ -35,10 +42,10 @@ bool parser::check(const TokenType type) {
     return peek().get_type() == type;
 }
 
-token parser::consume(const TokenType type, std::string message) {
+token parser::consume(const TokenType type, const std::string& message) {
     if (check(type)) return advance();
 
-    // throw error();
+    throw error(peek(), message);
 }
 
 bool parser::match(const std::vector<TokenType> &types) {
@@ -122,5 +129,34 @@ std::unique_ptr<expr> parser::primary() {
         consume(RIGHT_PAREN, "Expected ')' after expression.");
         return std::make_unique<grouping>(std::move(expression));
     }
+
+    throw error(peek(), "Expected expression.");
 }
 
+void parser::synchronize() {
+    advance();
+
+    while (!is_at_end()) {
+        if (previous().get_type() == SEMICOLON) return;
+        switch (peek().get_type()) {
+            case CLASS:
+            case FUN:
+            case VAR:
+            case FOR:
+            case IF:
+            case WHILE:
+            case PRINT:
+            case RETURN:
+                return;
+        }
+        advance();
+    }
+}
+
+std::unique_ptr<expr> parser::parse() {
+    try {
+        return expression();
+    } catch (ParseError error) {
+        return nullptr;
+    }
+}

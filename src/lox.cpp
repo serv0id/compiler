@@ -4,6 +4,9 @@
 #include <iostream>
 #include <utility>
 
+#include "astprinter.h"
+#include "parser.h"
+
 bool lox::had_error = false;
 
 lox::lox(const std::string &file_name) {
@@ -22,6 +25,14 @@ void lox::error(const int line, const std::string& message) {
     report(line, "", message);
 }
 
+void lox::error(const token& token, const std::string& string) {
+    if (token.get_type() == EOFF) {
+        report(token.get_line(), "at end", string);
+    } else {
+        report(token.get_line(), " at '" + token.get_lexeme() + "'", string);
+    }
+}
+
 void lox::report(const int line, const std::string& where, const std::string& message) {
     std::cerr << "[line " << line << "] Error" << where << ": " << message << "\n";
     had_error = true;
@@ -29,8 +40,12 @@ void lox::report(const int line, const std::string& where, const std::string& me
 
 int lox::run(std::string code) {
     scanner scanner(std::move(code));
-    scanner.scan_tokens();
-    scanner.print_tokens();
+    auto tokens = scanner.scan_tokens();
+
+    parser parser(tokens);
+
+    astprinter printer;
+    std::cout << printer.print(*parser.parse()) << std::endl;
 
     if (had_error) {
         std::cout << "Exiting due to error(s)";

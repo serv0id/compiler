@@ -4,6 +4,9 @@
 #include "token.h"
 #include "expr.h"
 
+struct ParseError : std::runtime_error {
+    ParseError() : std::runtime_error("parse error") {}
+};
 
 class parser {
     std::vector<token> tokens;
@@ -18,11 +21,13 @@ public:
 
     token previous();
 
+    static ParseError error(const token& token, const std::string& message);
+
     token advance();
 
     bool check(TokenType type);
 
-    token consume(TokenType type, std::string message);
+    token consume(TokenType type, const std::string& message);
 
     bool match(const std::vector<TokenType> &);
 
@@ -39,7 +44,13 @@ public:
     std::unique_ptr<expr> p_unary();
 
     std::unique_ptr<expr> primary();
+
+    void synchronize();
+
+    std::unique_ptr<expr> parse();
 };
+
+
 
 
 #endif //COMPILER_PARSER_H
