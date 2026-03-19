@@ -15,6 +15,8 @@ add_library(core
         src/interpreter.cpp
         include/interpreter.h
         include/runtimeerror.h
+        src/stmt.cpp
+        src/stmt.h
 )
 
 target_include_directories(core PUBLIC include)
