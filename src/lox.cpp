@@ -3,11 +3,13 @@
 #include <fstream>
 #include <iostream>
 #include <utility>
-
 #include "astprinter.h"
 #include "parser.h"
 
+
 bool lox::had_error = false;
+bool lox::had_runtime_error = false;
+interpreter lox::interp = interpreter();
 
 lox::lox(const std::string &file_name) {
     file = file_name;
@@ -38,18 +40,26 @@ void lox::report(const int line, const std::string& where, const std::string& me
     had_error = true;
 }
 
+void lox::runtime_error(RuntimeError e) {
+    std::cout << e.what() << "\n[line " << e.tok.get_line() << "]" << std::endl;
+    had_runtime_error = true;
+}
+
 int lox::run(std::string code) {
     scanner scanner(std::move(code));
     auto tokens = scanner.scan_tokens();
-
     parser parser(tokens);
 
-    astprinter printer;
-    std::cout << printer.print(*parser.parse()) << std::endl;
+    interp.interpret(*parser.parse());
+    // astprinter printer;
+    // std::cout << printer.print(*parser.parse()) << std::endl;
 
     if (had_error) {
         std::cout << "Exiting due to error(s)";
         exit(65);
+    }
+    if (had_runtime_error) {
+        exit(70);
     }
     return 0;
 }

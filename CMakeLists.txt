@@ -12,6 +12,9 @@ add_library(core
         include/astprinter.h
         src/parser.cpp
         include/parser.h
+        src/interpreter.cpp
+        include/interpreter.h
+        include/runtimeerror.h
 )
 
 target_include_directories(core PUBLIC include)
