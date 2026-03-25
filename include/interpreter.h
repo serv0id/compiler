@@ -10,7 +10,7 @@ class interpreter: expr_visitor {
 
     std::any visit_unary(const unary &e) override;
 
-    std::any visit_binary(const binary &e);
+    std::any visit_binary(const binary &e) override;
 
     bool is_truthy(const std::any& val);
 
