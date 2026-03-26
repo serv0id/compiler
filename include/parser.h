@@ -3,6 +3,7 @@
 #include <vector>
 #include "token.h"
 #include "expr.h"
+#include "stmt.h"
 
 struct ParseError : std::runtime_error {
     ParseError() : std::runtime_error("parse error") {}
@@ -46,6 +47,8 @@ public:
     std::unique_ptr<expr> primary();
 
     void synchronize();
+
+    std::unique_ptr<stmt> expression_statement();
 
     std::unique_ptr<expr> parse();
 };

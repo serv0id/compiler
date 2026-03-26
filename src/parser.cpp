@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <utility>
 
+#include "stmt.h"
+
 /*
 
 expression     → equality ;
@@ -151,6 +153,13 @@ void parser::synchronize() {
         }
         advance();
     }
+}
+
+std::unique_ptr<stmt> parser::expression_statement() {
+    std::unique_ptr<expr> expr = expression();
+    consume(SEMICOLON, "Expected ';' after expression.");
+
+    return std::make_unique<expr_stmt>(std::move(expr));
 }
 
 std::unique_ptr<expr> parser::parse() {
