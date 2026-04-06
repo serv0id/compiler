@@ -49,10 +49,9 @@ int lox::run(std::string code) {
     scanner scanner(std::move(code));
     auto tokens = scanner.scan_tokens();
     parser parser(tokens);
+    auto statements = parser.parse();
 
-    //interp.interpret(*parser.parse());
-    // astprinter printer;
-    // std::cout << printer.print(*parser.parse()) << std::endl;
+    interp.interpret(statements);
 
     if (had_error) {
         std::cout << "Exiting due to error(s)";

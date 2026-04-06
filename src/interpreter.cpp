@@ -89,20 +89,24 @@ std::string stringify(const std::any& val) {
         if (s.back() == '.') s.pop_back();
         return s;
     }
-    if (val.type() == typeid(bool))
+    if (val.type() == typeid(bool)) {
         return std::any_cast<bool>(val) ? "true" : "false";
-    if (val.type() == typeid(std::string))
+    }
+    if (val.type() == typeid(std::string)) {
         return std::any_cast<std::string>(val);
+    }
     return "<unknown>";
 }
 
 std::any interpreter::visit_expr_stmt(const expr_stmt &e) {
     evaluate(*e.expression);
+    return {};
 }
 
 std::any interpreter::visit_print(const print& e) {
     std::any val = evaluate(*e.expression);
     std::cout << stringify(val) << std::endl;
+    return {};
 }
 
 bool interpreter::is_truthy(const std::any& val) {

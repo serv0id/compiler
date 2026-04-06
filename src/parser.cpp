@@ -121,7 +121,7 @@ std::unique_ptr<expr> parser::p_unary() {
 std::unique_ptr<expr> parser::primary() {
     if (match({FALSE})) return std::make_unique<literal>(false);
     if (match({TRUE})) return std::make_unique<literal>(true);
-    if (match({NIL})) return std::make_unique<literal>(nullptr);
+    if (match({NIL})) return std::make_unique<literal>(std::any{});
 
     if (match({NUMBER, STRING})) return std::make_unique<literal>(previous().get_literal());
 
