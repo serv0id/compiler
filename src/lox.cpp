@@ -50,7 +50,7 @@ int lox::run(std::string code) {
     auto tokens = scanner.scan_tokens();
     parser parser(tokens);
 
-    interp.interpret(*parser.parse());
+    //interp.interpret(*parser.parse());
     // astprinter printer;
     // std::cout << printer.print(*parser.parse()) << std::endl;
 

@@ -48,9 +48,13 @@ public:
 
     void synchronize();
 
+    std::unique_ptr<stmt> statement();
+
     std::unique_ptr<stmt> expression_statement();
 
-    std::unique_ptr<expr> parse();
+    std::unique_ptr<stmt> print_statement();
+
+    std::vector<std::unique_ptr<stmt>> parse();
 };
 
 

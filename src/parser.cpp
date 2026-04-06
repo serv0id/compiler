@@ -2,7 +2,6 @@
 #include "lox.h"
 #include <algorithm>
 #include <utility>
-
 #include "stmt.h"
 
 /*
@@ -155,6 +154,11 @@ void parser::synchronize() {
     }
 }
 
+std::unique_ptr<stmt> parser::statement() {
+    if (match({PRINT})) return print_statement();
+    return expression_statement();
+}
+
 std::unique_ptr<stmt> parser::expression_statement() {
     std::unique_ptr<expr> expr = expression();
     consume(SEMICOLON, "Expected ';' after expression.");
@@ -162,10 +166,17 @@ std::unique_ptr<stmt> parser::expression_statement() {
     return std::make_unique<expr_stmt>(std::move(expr));
 }
 
-std::unique_ptr<expr> parser::parse() {
-    try {
-        return expression();
-    } catch (ParseError error) {
-        return nullptr;
+std::unique_ptr<stmt> parser::print_statement() {
+    std::unique_ptr<expr> expr = expression();
+    consume(SEMICOLON, "Expected ';' after value.");
+
+    return std::make_unique<print>(std::move(expr));
+}
+
+std::vector<std::unique_ptr<stmt>> parser::parse() {
+    std::vector<std::unique_ptr<stmt>> statements;
+    while (!is_at_end()) {
+        statements.push_back(statement());
     }
+    return statements;
 }
