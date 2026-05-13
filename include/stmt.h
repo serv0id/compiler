@@ -5,11 +5,13 @@
 
 struct print;
 struct expr_stmt;
+struct var;
 
 struct stmt_visitor {
     virtual ~stmt_visitor() = default;
     virtual std::any visit_expr_stmt(const expr_stmt &e) = 0;
     virtual std::any visit_print(const print &e) = 0;
+    virtual std::any visit_var(const var &e) = 0;
 };
 
 struct stmt {
@@ -32,6 +34,18 @@ struct print: stmt {
 
     std::any accept(stmt_visitor &v) const override {
         return v.visit_print(*this);
+    }
+};
+
+struct var: stmt {
+    token name;
+    std::unique_ptr<expr> initializer;
+    var(token name, std::unique_ptr<expr> initializer)
+        : name(std::move(name))
+        , initializer(std::move(initializer)) {}
+
+    std::any accept(stmt_visitor &v) const override {
+        return v.visit_var(*this);
     }
 };
 

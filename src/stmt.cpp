@@ -1,9 +1,13 @@
 /*
-program        → statement* EOF ;
+program        → declaration* EOF ;
+
+declaration    → varDecl
+               | statement ;
 
 statement      → exprStmt
-| printStmt ;
+               | printStmt ;
 
+varDecl        → "var" IDENTIFIER ( "=" expression )? ";" ;
 exprStmt       → expression ";" ;
 printStmt      → "print" expression ";" ;
 */

@@ -7,6 +7,7 @@ struct literal;
 struct grouping;
 struct unary;
 struct binary;
+struct variable;
 
 struct expr_visitor {
     virtual ~expr_visitor() = default;
@@ -14,6 +15,7 @@ struct expr_visitor {
     virtual std::any visit_unary(const unary& e)       = 0;
     virtual std::any visit_grouping(const grouping& e) = 0;
     virtual std::any visit_literal(const literal& e)   = 0;
+    virtual std::any visit_variable(const variable& e) = 0;
 };
 
 struct expr {
@@ -66,6 +68,17 @@ struct literal : expr {
 
     std::any accept(expr_visitor& v) const override {
         return v.visit_literal(*this);
+    }
+};
+
+struct variable : expr {
+    token name;
+
+    variable(token name)
+        : name(std::move(name)) {}
+
+    std::any accept(expr_visitor& v) const override {
+        return v.visit_variable(*this);
     }
 };
 
